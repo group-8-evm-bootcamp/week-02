@@ -9,6 +9,8 @@ const providerApiKey = process.env.ALCHEMY_API_KEY;
 const deployerPrivateKey = process.env.PRIVATE_KEY;
 
 async function main() {
+    // npx ts-node --files ./scripts/DeployWithViem.ts "arg1" "arg2" "arg3"
+    
     // Take arguments and cut the first two args as it's not needed
     const proposals = process.argv.slice(2);
     if (!proposals || proposals.length < 1)
