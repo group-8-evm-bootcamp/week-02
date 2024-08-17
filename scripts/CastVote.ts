@@ -35,7 +35,7 @@ async function main() {
       args: [BigInt(proposalIndex)],
     })) as any[];
     const name = hexToString(proposal[0], { size: 32 });
-    console.log("Voting to proposal", name);
+    console.log(`Voting to proposal "${name}"`);
 
     const account = privateKeyToAccount(`${deployerPrivateKey}` as Address);
     const voter = createWalletClient({
@@ -53,7 +53,7 @@ async function main() {
     console.log("Transaction hash:", hash);
     console.log("Waiting for confirmations...");
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
-    console.log("Transaction confirmed");
+    console.log(`You successfully voted to proposal "${name}"`);
 }
 
 main().catch((error) => {

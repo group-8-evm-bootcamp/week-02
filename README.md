@@ -1,13 +1,21 @@
-# Sample Hardhat Project
+# Weekend Project - Week-02
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+## Instructions
 
-Try running some of the following tasks:
+This is a group activity for at least 3 students:
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+- Develop and run scripts for “Ballot.sol” within your group to give voting rights, casting votes, delegating votes and querying results
+- Write a report with each function execution and the transaction hash, if successful, or the revert reason, if failed
+- Submit your weekend project by filling the form provided in Discord
+- Submit your code in a github repository in the form
+
+## Group 8 Participants
+
+| Unique id | Discord username |
+| --------- | ---------------- |
+| c8ynre    | @tianbuyung      |
+| gGe7Bg    | @ErZeTe          |
+
+## Report
+
+Please check into [CONTRACT INTERACTION REPORT](./reports/contract-interaction.md)

@@ -4,7 +4,7 @@ import { connectToBlockchainWithRPC } from "../helpers/connectToBlockchainWithRP
 import { abi } from "../artifacts/contracts/Ballot.sol/Ballot.json";
 
 async function main() {
-  // npx ts-node --files ./scripts/CheckTheWiningProposal.ts "ballotContractAddress"
+  // npx ts-node --files ./scripts/CheckTheWinningProposal.ts "ballotContractAddress"
 
   // --- Check the parameters ---
   const parameters = process.argv.slice(2);
