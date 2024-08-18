@@ -5,7 +5,7 @@ import { publicClient, walletClient } from "../helpers/client";
 dotenv.config();
 
 async function main() {
-    // npx ts-node --files ./scripts/CastVote.ts [contractAddress]
+    // npx ts-node --files ./scripts/CastVote.ts [contractAddress] [proposalIndex]
 
     const parameters = process.argv.slice(2);
     if (!parameters || parameters.length < 2)
