@@ -1,14 +1,18 @@
 {
-  "name": "day2",
+  "name": "week-02",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy-with-viem": "npx ts-node --files scripts/DeployWithViem.ts",
+    "give-voting-right": "npx ts-node --files scripts/GiveVotingRight.ts",
     "cast-vote": "npx ts-node --files scripts/CastVote.ts",
     "delegate-to-vote": "npx ts-node --files scripts/DelegateToVote.ts",
     "check-winning-proposal": "npx ts-node --files scripts/CheckTheWinningProposal.ts",
-    "give-voting-right": "npx ts-node --files scripts/GiveVotingRight.ts"
+    "check-winner-name": "npx ts-node --files scripts/CheckTheWinnerName.ts",
+    "check-proposal-by-index": "npx ts-node --files scripts/CheckTheProposalByIndex.ts",
+    "check-voter-right": "npx ts-node --files scripts/CheckTheVoterRight.ts"
   },
   "author": "",
   "license": "ISC",
