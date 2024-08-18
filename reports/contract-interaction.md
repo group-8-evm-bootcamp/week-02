@@ -86,18 +86,20 @@ transaction hash:
 npm run check-voter-right "0x42d7182a133d090ee3f7624b5afe0133bf047e7d" "0x5Ee9CaD768760cdAEC9B8B55E4230cEC0B792c3a"
 
 Shows the below result
----
 Weight: 0
 Has voted: false
 
 2. I Check to see the status of the votes.
 npm run check-proposal-by-index "0x42d7182a133d090ee3f7624b5afe0133bf047e7d" "0" "1" "2"
 I see that Cats and Dogs both have 2. But, Rats have less votes.
+![Status of Votes](<rStatusOfVotes.png>)
 
 3. i decide to vote for Rats to make them equal to Cats and Dogs:
 npm run cast-vote "0x42d7182a133d090ee3f7624b5afe0133bf047e7d" "2"
 
 Transaction got reverted with the below error:
 "TransactionExecutionError: Execution reverted with reason: Has no right to vote."
+![Voting failed](<rVotingFailed.png>)
 
 4. npm run check-winning-proposal "0x42d7182a133d090ee3f7624b5afe0133bf047e7d" && npm run check-winner-name "0x42d7182a133d090ee3f7624b5afe0133bf047e7d"
+![the winning proposal after raj vote failed](<rWinningVoteCheck.png>)
