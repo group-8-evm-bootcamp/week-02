@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "give-voting-right": "npx ts-node --files scripts/GiveVotingRight.ts"
   },
   "author": "",
   "license": "ISC",
