@@ -1,15 +1,9 @@
-import { createPublicClient, http, createWalletClient, formatEther, toHex, Address, hexToString } from "viem";
-import { privateKeyToAccount } from "viem/accounts";
-import { sepolia } from "viem/chains";
+import { formatEther, toHex, Address, hexToString } from "viem";
+import { publicClient, walletClient } from "../helpers/client";
 import { abi, bytecode } from "../artifacts/contracts/Ballot.sol/Ballot.json";
-import * as dotenv from "dotenv";
-dotenv.config();
-
-const providerApiKey = process.env.ALCHEMY_API_KEY;
-const deployerPrivateKey = process.env.PRIVATE_KEY;
 
 async function main() {
-    // npx ts-node --files ./scripts/DeployWithViem.ts "arg1" "arg2" "arg3"
+    // npm run deploy-with-viem "arg1" "arg2" "arg3"
     
     // Take arguments and cut the first two args as it's not needed
     const proposals = process.argv.slice(2);
@@ -17,33 +11,23 @@ async function main() {
         throw new Error("Proposals not provided");
 
     //-- Create public client to connect with sepolia using Alchemy
-    const publicClient = createPublicClient({
-        chain: sepolia,
-        transport: http(`https://eth-sepolia.g.alchemy.com/v2/${providerApiKey}`),
-    });
     const blockNumber = await publicClient.getBlockNumber();
     console.log("Last block number:", blockNumber);
 
     //-- Connect the wallet account that we're going to deploy with
-    const account = privateKeyToAccount(`${deployerPrivateKey}` as Address);
-    const deployer = createWalletClient({
-      account,
-      chain: sepolia,
-      transport: http(`https://eth-sepolia.g.alchemy.com/v2/${providerApiKey}`),
-    });
-    console.log("Deployer address:", deployer.account.address);
+    console.log("Deployer address:", walletClient.account.address);
     const balance = await publicClient.getBalance({
-      address: deployer.account.address,
+      address: walletClient.account.address,
     });
     console.log(
       "Deployer balance:",
       formatEther(balance),
-      deployer.chain.nativeCurrency.symbol
+      walletClient.chain.nativeCurrency.symbol
     );
 
     //-- Deploying the contract on Sepolia network
     console.log("\nDeploying Ballot contract");
-    const hash = await deployer.deployContract({
+    const hash = await walletClient.deployContract({
       abi,
       bytecode: bytecode as Address,
       args: [proposals.map((prop) => toHex(prop, { size: 32 }))],
