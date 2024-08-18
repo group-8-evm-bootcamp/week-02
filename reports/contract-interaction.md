@@ -54,3 +54,16 @@
 
 4. Check the winning proposal and the winner name with `npm run check-winning-proposal "0x42d7182a133d090ee3f7624b5afe0133bf047e7d" && npm run check-winner-name "0x42d7182a133d090ee3f7624b5afe0133bf047e7d"`
    ![the winning proposal after tianbuyung voted](<Screenshot 2024-08-18 at 12.50.49.png>)
+
+### Joosh75's interaction
+
+   1. I start by checking my voting right:
+npm run check-voter-right "0x42d7182a133d090ee3f7624b5afe0133bf047e7d" "0x62cA7B13a0f7F3B4f55aAd7968aD0a78ea2d625C"
+2. I Check to see the status of the votes.
+npm run check-proposal-by-index "0x42d7182a133d090ee3f7624b5afe0133bf047e7d" "0" "1" "2"
+I see that Cats and Dogs both have 2.
+3. i decide to vote for Rats to show them some love:
+npm run cast-vote "0x42d7182a133d090ee3f7624b5afe0133bf047e7d" "2"
+transaction hash:
+0xb24664fd59cefcf261337184e326249130435c492f9187da02b42a781fa9e24b
+4. npm run check-winning-proposal "0x42d7182a133d090ee3f7624b5afe0133bf047e7d" && npm run check-winner-name "0x42d7182a133d090ee3f7624b5afe0133bf047e7d"
