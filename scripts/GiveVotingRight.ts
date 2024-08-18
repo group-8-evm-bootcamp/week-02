@@ -43,6 +43,21 @@ async function main() {
 
     //-- For each wallet address in wallets, give them rights to vote IF the address is correct
     for (const voterAddress of votersAddress) {
+        const voterData = (await publicClient.readContract({
+          address: contractAddress,
+          abi,
+          functionName: "voters",
+          args: [voterAddress],
+        })) as [BigInt, boolean, Address, BigInt]
+
+        const [weight, voted, delegate, vote] = voterData
+
+        //-- If voter already voted, skip
+        if (voted) {
+          console.log("The voter already voted. Address: ", voterAddress);
+          continue; // will not execute the line below and continue to the next voter
+        }
+        
         console.log(`\nGiving ${voterAddress} right to vote...`);
         const hash = await walletClient.writeContract({
             address: contractAddress,
