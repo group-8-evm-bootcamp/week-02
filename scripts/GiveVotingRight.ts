@@ -1,65 +1,77 @@
-import { abi, bytecode } from "../artifacts/contracts/Ballot.sol/Ballot.json";
-import {hexToString, createPublicClient, http, createWalletClient, Address} from "viem";
-import { privateKeyToAccount } from "viem/accounts";
-import { sepolia } from "viem/chains";
-import * as dotenv from "dotenv";
-dotenv.config();
-
-const providerApiKey = process.env.ALCHEMY_API_KEY;
-const deployerPrivateKey = process.env.PRIVATE_KEY;
+import { abi } from "../artifacts/contracts/Ballot.sol/Ballot.json";
+import { Address } from "viem";
+import { ADDRESS_REGEX } from "../helpers/constant";
+import { publicClient, walletClient } from "../helpers/client";
 
 async function main() {
     // npx ts-node --files ./scripts/GiveVotingRight.ts [contractAddress] [wallet1] [wallet2]...
 
     //-- Get contractAddress from args
-    const parameters = process.argv.slice(2);
-    if (!parameters || parameters.length < 2)
-      throw new Error("Parameters not provided");
-    const contractAddress = parameters[0] as `0x${string}`;
-    if (!contractAddress) throw new Error("Contract address not provided");
-    if (!/^0x[a-fA-F0-9]{40}$/.test(contractAddress))
-      throw new Error("Invalid contract address");
+    const [contractAddress, ...votersAddress] = process.argv.slice(2) as Address[];
 
-    //-- Get the wallet from args
-    const wallets = parameters.slice(1);
-    
-    //-- Create public client to connect with sepolia using Alchemy
-    const publicClient = createPublicClient({
-        chain: sepolia,
-        transport: http(`https://eth-sepolia.g.alchemy.com/v2/${providerApiKey}`),
-    });
+    //-- Validate contractAddress and votersAddress
+    if (!contractAddress) {
+      throw new Error("Contract address should be provided as first argument")
+    }
 
-    //-- Interact with the contract as the chairperson/deployer
-    const account = privateKeyToAccount(`${deployerPrivateKey}` as Address);
-    const chairperson = createWalletClient({
-        account,
-        chain: sepolia,
-        transport: http(`https://eth-sepolia.g.alchemy.com/v2/${providerApiKey}`),
-    });
+    if (votersAddress.length < 1) {
+      throw new Error(
+        "Voters address should be provided as second (or more) argument"
+      )
+    }
+
+    Array.from([contractAddress, ...votersAddress]).forEach((address, i) => {
+      if (!ADDRESS_REGEX.test(address)) {
+        if (i === 0) {
+          throw new Error(`Invalid contract address: ${address}`)
+        } else {
+          throw new Error(`Invalid voter address: ${address}`)
+        }
+      }
+    })
+
+    //-- Check if the wallet address is the chairperson (only chairperson can give voting rights)
+    const chairpersonAddress = (await publicClient.readContract({
+      address: contractAddress,
+      abi,
+      functionName: "chairperson",
+    })) as Address
+
+    if (chairpersonAddress !== walletClient.account.address) {
+      throw new Error("Only the chairperson can give voting rights")
+    }
 
     //-- For each wallet address in wallets, give them rights to vote IF the address is correct
-    for (const walletAddress of wallets) {
-        const wallet_ = walletAddress as `0x${string}`;
-        if (!wallet_) return;
-        if (!/^0x[a-fA-F0-9]{40}$/.test(walletAddress)) {
-          console.log(`\nInvalid wallet address arg: ${wallet_}`);
-          return;
-        }
+    for (const voterAddress of votersAddress) {
+        const voterData = (await publicClient.readContract({
+          address: contractAddress,
+          abi,
+          functionName: "voters",
+          args: [voterAddress],
+        })) as [BigInt, boolean, Address, BigInt]
 
-        console.log(`\nGiving ${walletAddress} right to vote...`);
-        const hash = await chairperson.writeContract({
+        const [weight, voted, delegate, vote] = voterData
+
+        //-- If voter already voted, skip
+        if (voted) {
+          console.log("The voter already voted. Address: ", voterAddress);
+          continue; // will not execute the line below and continue to the next voter
+        }
+        
+        console.log(`\nGiving ${voterAddress} right to vote...`);
+        const hash = await walletClient.writeContract({
             address: contractAddress,
             abi,
             functionName: "giveRightToVote",
-            args: [wallet_],
+            args: [voterAddress],
         });
 
         
         console.log("Transaction hash:", hash);
         console.log("Waiting for confirmations...");
-        const receipt = await publicClient.waitForTransactionReceipt({ hash });
+        await publicClient.waitForTransactionReceipt({ hash });
         
-        console.log(`Wallet ${walletAddress} has been given a right to vote`);
+        console.log(`Wallet ${voterAddress} has been given a right to vote`);
     };
 
 }
