@@ -57,7 +57,7 @@
 
 ### Joosh75's interaction
 
-   1. I start by checking my voting right:
+1. I start by checking my voting right:
 npm run check-voter-right "0x42d7182a133d090ee3f7624b5afe0133bf047e7d" "0x62cA7B13a0f7F3B4f55aAd7968aD0a78ea2d625C"
 2. I Check to see the status of the votes.
 npm run check-proposal-by-index "0x42d7182a133d090ee3f7624b5afe0133bf047e7d" "0" "1" "2"
@@ -67,3 +67,14 @@ npm run cast-vote "0x42d7182a133d090ee3f7624b5afe0133bf047e7d" "2"
 transaction hash:
 0xb24664fd59cefcf261337184e326249130435c492f9187da02b42a781fa9e24b
 4. npm run check-winning-proposal "0x42d7182a133d090ee3f7624b5afe0133bf047e7d" && npm run check-winner-name "0x42d7182a133d090ee3f7624b5afe0133bf047e7d"
+
+
+### 0xOwenn's / GavinOwen interaction
+
+1. I check my voting rights using `npm run check-voter-right` ![](<check vote.png>)
+
+2. Looks that i have 1 voting right, i used it to vote dog using `npm run cast-vote` , since it is my favourite animal! ![](<vote dogs.png>)
+
+3. Checking current vote amount using `npm run check-proposal-by-index ` and we can see that dogs and cats have the same vote amount ![](<check proposal.png>)
+
+4. I tried to delegate my vote to `0xaEF3fa5C5ee0dDfC7041Bf742803D246ddf4DF6E` using `npm run delegate-to-vote` but transaction reverted, because i already voted. ![](delegate.png)
