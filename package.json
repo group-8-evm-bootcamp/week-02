@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "cast-vote": "npx ts-node --files scripts/CastVote.ts",
+    "delegate-to-vote": "npx ts-node --files scripts/DelegateToVote.ts",
+    "check-winning-proposal": "npx ts-node --files scripts/CheckTheWinningProposal.ts",
     "give-voting-right": "npx ts-node --files scripts/GiveVotingRight.ts"
   },
   "author": "",

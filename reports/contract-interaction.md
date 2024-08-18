@@ -17,10 +17,25 @@
 
     ![Give voting right to team members](<Screenshot 2024-08-17 220045.png>)
 
-4. Run the [CastVote.ts](../scripts/CastVote.ts) script to cast my vote to proposal with the index 1. 
+4. Run the [CastVote.ts](../scripts/CastVote.ts) script to cast my vote to proposal with the index 1.
 Transaction hash: [0x60ef332c53e5ddf40ca33865b6647e525107a235a4d5dca4fdb115905136be01](https://sepolia.etherscan.io/tx/0x60ef332c53e5ddf40ca33865b6647e525107a235a4d5dca4fdb115905136be01)
     ![Run script to cast vote](<Screenshot 2024-08-17 220844.png>)
 
 5. Run the [CheckTheWinnerName.ts](../scripts/CheckTheWinnerName.ts) script to see the current proposal winner after I casted my vote.
     ![Check current winner](<Screenshot 2024-08-17 221117.png>)
 
+### Vins' interaction
+
+1. Add script for executing from package.json ![](<Screenshot 2024-08-18 at 10.25.16.png>)
+
+2. Run `npm run cast-vote 0x42D7182A133D090eE3F7624B5AFE0133bF047e7D 0` and `npm run cast-vote 0x42D7182A133D090eE3F7624B5AFE0133bF047e7D 1` both resulting error ![](<Screenshot 2024-08-18 at 10.11.06.png>) ![](<Screenshot 2024-08-18 at 10.11.12.png>)
+
+3. Debugging the code and turns out there is a missing `0x` for the deployer account ![]<Screenshot 2024-08-18 at 10.10.33.png>
+
+4. Update the voter into walletClient directly from [helpers/client.ts](../helpers/client.ts#L16)
+
+5. Re-run `npm run cast-vote 0x42D7182A133D090eE3F7624B5AFE0133bF047e7D 0` and successful ![](<Screenshot 2024-08-18 at 10.10.55.png>)
+
+6. Try to delegate to `0xaEF3fa5C5ee0dDfC7041Bf742803D246ddf4DF6E` but got error (expected) ![](<Screenshot 2024-08-18 at 10.23.35.png>)
+
+7. Check the winning proposal ![](<Screenshot 2024-08-18 at 10.26.00.png>)
